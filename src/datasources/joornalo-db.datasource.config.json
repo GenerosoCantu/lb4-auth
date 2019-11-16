@@ -1,0 +1,11 @@
+{
+  "name": "joornaloDB",
+  "connector": "mongodb",
+  "url": "mongodb://localhost:27017/joornalo",
+  "host": "",
+  "port": 0,
+  "user": "",
+  "password": "",
+  "database": "",
+  "useNewUrlParser": true
+}
