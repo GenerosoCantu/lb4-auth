@@ -1,3 +1,6 @@
+import { inject } from '@loopback/core';
+import { AuthenticationBindings, authenticate } from '@loopback/authentication';
+import { UserProfile, securityId, SecurityBindings } from '@loopback/security';
 import {
   Count,
   CountSchema,
@@ -17,30 +20,33 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import {News} from '../models';
-import {NewsRepository} from '../repositories';
+import { News } from '../models';
+import { NewsRepository } from '../repositories';
 
 export class NewsController {
   constructor(
     @repository(NewsRepository)
-    public newsRepository : NewsRepository,
-  ) {}
+
+    public newsRepository: NewsRepository,
+  ) { }
 
   @post('/news', {
     responses: {
       '200': {
         description: 'News model instance',
-        content: {'application/json': {schema: getModelSchemaRef(News)}},
+        content: { 'application/json': { schema: getModelSchemaRef(News) } },
       },
     },
   })
+  @authenticate('basic')
   async create(
+    @inject(SecurityBindings.USER)
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(News, {
             title: 'NewNews',
-            
+
           }),
         },
       },
@@ -54,7 +60,7 @@ export class NewsController {
     responses: {
       '200': {
         description: 'News model count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -70,7 +76,7 @@ export class NewsController {
         description: 'Array of News model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(News)},
+            schema: { type: 'array', items: getModelSchemaRef(News) },
           },
         },
       },
@@ -86,7 +92,7 @@ export class NewsController {
     responses: {
       '200': {
         description: 'News PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -94,7 +100,7 @@ export class NewsController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(News, {partial: true}),
+          schema: getModelSchemaRef(News, { partial: true }),
         },
       },
     })
@@ -108,7 +114,7 @@ export class NewsController {
     responses: {
       '200': {
         description: 'News model instance',
-        content: {'application/json': {schema: getModelSchemaRef(News)}},
+        content: { 'application/json': { schema: getModelSchemaRef(News) } },
       },
     },
   })
@@ -128,7 +134,7 @@ export class NewsController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(News, {partial: true}),
+          schema: getModelSchemaRef(News, { partial: true }),
         },
       },
     })
